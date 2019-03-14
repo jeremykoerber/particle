@@ -92,20 +92,14 @@ void lightHandler(const char *event, const char *data)
   }
   else if (Event == Connecting)
   {
-    colorWipe(strip.Color(0, 0, 127), 50);
-    strip.show();
-    colorWipe(strip.Color(0, 127, 0), 50);
-    strip.show();
-    colorWipe(strip.Color(0, 0, 127), 50);
-    strip.show();
-    colorWipe(strip.Color(0, 127, 0), 50);
-    strip.show();
-    colorAll(strip.Color(0, 0, 0), 50);
-    strip.show();
+    theaterChase(0xff,0xff,0xff,50);
   }
   else if (Event == Connected)
   {
     colorAll(strip.Color(0, 0, 63), 50);
+    strip.show();
+    delay(1000);
+    colorAll(strip.Color(255, 255, 255), 50);
     strip.show();
   }
   else if (Event == Disconnecting)
@@ -170,12 +164,10 @@ void lightHandler(const char *event, const char *data)
   }
   else if (Event == PrintCancelling)
   {
-    colorClose(strip.Color(255, 255, 0), 50);
-    colorClose(strip.Color(0, 0, 0), 50);
-    colorClose(strip.Color(255, 255, 0), 50);
-    colorClose(strip.Color(0, 0, 0), 50);
-    colorClose(strip.Color(255, 255, 0), 50);
-    colorClose(strip.Color(0, 0, 0), 50);
+    FadeInOut(0xff, 0xff, 0x00, 0);
+    FadeInOut(0xff, 0xff, 0x00, 0);
+    colorAll(strip.Color(255, 255, 0), 50);
+    strip.show();
   }
   else if (Event == PrintCancelled)
   {
@@ -388,4 +380,36 @@ void FadeInOut(byte red, byte green, byte blue, uint8_t wait){
     showStrip();
     delay(wait);
   }
+}
+
+void theaterChase(byte red, byte green, byte blue, int SpeedDelay) {
+
+  for (int j=0; j<10; j++) {  //do 10 cycles of chasing
+
+    for (int q=0; q < 3; q++) {
+
+      for (int i=0; i < NUM_LEDS; i=i+3) {
+
+        setPixel(i+q, red, green, blue);    //turn every third pixel on
+
+      }
+
+      showStrip();
+
+     
+
+      delay(SpeedDelay);
+
+     
+
+      for (int i=0; i < NUM_LEDS; i=i+3) {
+
+        setPixel(i+q, 0,0,0);        //turn every third pixel off
+
+      }
+
+    }
+
+  }
+
 }
