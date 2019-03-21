@@ -3,7 +3,7 @@
 #include "Particle.h"
 #include "neopixel.h"
 
-SYSTEM_MODE(AUTOMATIC);
+SYSTEM_MODE(MANUAL);
 
 // IMPORTANT: Set pixel COUNT, PIN and TYPE
 #define NUM_LEDS 50
@@ -15,9 +15,12 @@ int x;
 void setup() {
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-  FadeInOut(0xff, 0x00, 0x00); // red
+  //FadeInOut(0xff, 0x00, 0x00); // red
+  rainbow(20);
+  setAll(0x0f, 0x00, 0x5f);
+  strip.show();
   x = 0;
-  Particle.subscribe("BlueAura", lightHandler, MY_DEVICES);
+  //Particle.subscribe("BlueAura", lightHandler, MY_DEVICES);
 }
 
 void lightHandler(const char *event, const char *data)
@@ -75,22 +78,22 @@ void lightHandler(const char *event, const char *data)
 }
 
 void loop() {
-  if (Particle.connected()) {
-    if (x == 0) {
-      FadeInOut(0x00, 0xff, 0x00); // green
-      FadeIn(0x00, 0x00, 0xff); // blue
-      x = 1;
-    }
-    else if (x == 2) {
-      setAll(0x00, 0x00, 0x00); // off
-    }
-    //setAll(0x00, 0x00, 0xff); // blue
-  }
-  else {
-    x = 0;
-    setAll(0x7f, 0x00, 0x00); // dim red
-  }
-  delay(1000);
+  // if (Particle.connected()) {
+  //   if (x == 0) {
+  //     FadeInOut(0x00, 0xff, 0x00); // green
+  //     FadeIn(0x00, 0x00, 0xff); // blue
+  //     x = 1;
+  //   }
+  //   else if (x == 2) {
+  //     setAll(0x00, 0x00, 0x00); // off
+  //   }
+  //   //setAll(0x00, 0x00, 0xff); // blue
+  // }
+  // else {
+  //   x = 0;
+  //   setAll(0x7f, 0x00, 0x00); // dim red
+  // }
+  // delay(1000);
 }
 
 void showStrip() {
