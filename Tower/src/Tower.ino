@@ -1,6 +1,7 @@
 #include "Particle.h"
 #include "neopixel.h"
 
+
 SYSTEM_MODE(AUTOMATIC);
 
 #define BRIGHTNESS 255
@@ -37,6 +38,8 @@ void setup() {
   strip.setBrightness(BRIGHTNESS);
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
+  Particle.subscribe("Tower", lightHandler, MY_DEVICES);
+  //rainbowCycle(200);
 }
 
 void loop() {
@@ -48,15 +51,37 @@ void loop() {
 
   //whiteOverRainbow(40,500,1);  
   //rainbowCycle(200);
-  rainbow(100);
+  //rainbow(100);
   //pulseWhite(5); 
 
   // fullWhite();
   // delay(2000);
 
   //rainbowFade2White(3,3,1);
+}
 
-
+void lightHandler(const char *event, const char *data)
+{
+  Serial.println("event received");
+  std::string Event (event);
+  std::string Clear ("Tower-Clear");
+  std::string Rain ("Tower-Rain");
+  std::string Cloudy ("Tower-Cloudy");
+  uint16_t i;
+  if (Event == Clear)
+  {
+    colorWipe(strip.Color(0, 0, 0, 255), 50);
+  }
+  else if (Event == Rain)
+  {
+    colorWipe(strip.Color(0, 0, 255), 50);
+    strip.show();
+  }
+  else if (Event == Cloudy)
+  {
+    colorWipe(strip.Color(0, 127, 127), 50);
+    strip.show();
+  }
 }
 
 // Fill the dots one after the other with a color
